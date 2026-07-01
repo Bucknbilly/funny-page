@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Converter</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; color: #eee; font-family: monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 12px; padding: 20px; }
+  textarea { width: 600px; max-width: 100%; height: 140px; background: #1e1e1e; color: #eee; border: 1px solid #333; padding: 10px; font-family: monospace; font-size: 14px; resize: vertical; outline: none; }
+  .controls { display: flex; gap: 10px; align-items: center; }
+  select, input[type=number] { background: #1e1e1e; color: #eee; border: 1px solid #333; padding: 6px 10px; font-family: monospace; font-size: 13px; outline: none; }
+  input[type=number] { width: 80px; }
+  button { background: #333; color: #eee; border: 1px solid #555; padding: 7px 20px; font-family: monospace; font-size: 14px; cursor: pointer; }
+  button:hover { background: #444; }
+  #output { width: 600px; max-width: 100%; min-height: 80px; background: #1e1e1e; border: 1px solid #333; padding: 10px; font-family: monospace; font-size: 14px; word-break: break-all; white-space: pre-wrap; user-select: all; }
+</style>
+</head>
+<body>
+
+<textarea id="input" placeholder="input..."></textarea>
+
+<div class="controls">
+  <select id="wrapMode">
+    <option value="odd">odd</option>
+    <option value="all">all</option>
+    <option value="random">random</option>
+  </select>
+  <input type="number" id="wrapChance" value="0.6" min="0" max="1" step="0.05" title="wrap chance (random mode)">
+  <input type="number" id="seed" placeholder="seed" title="seed (blank = random)">
+  <button onclick="convert()">Convert</button>
+  <button onclick="copyOutput()">Copy</button>
+</div>
+
+<div id="output"></div>
+
+<script>
+  const tagChars = "abcdefghijklmnopqrstuvwxyz".split("");
+  const extraTags = ["ab","ac","em","gc","hc","kb","lc","mc","tc","vc"];
+  const tags = [...tagChars, ...extraTags];
+
+  // Simple seeded RNG (mulberry32)
+  function makeRng(seed) {
+    let s = seed >>> 0;
+    return function() {
+      s |= 0; s = s + 0x6D2B79F5 | 0;
+      let t = Math.imul(s ^ s >>> 15, 1 | s);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function convert() {
+    const txt = document.getElementById("input").value;
+    if (!txt) { document.getElementById("output").textContent = ""; return; }
+
+    const wrapMode = document.getElementById("wrapMode").value;
+    const wrapChance = parseFloat(document.getElementById("wrapChance").value) || 0.6;
+    const seedVal = document.getElementById("seed").value.trim();
+    const rng = makeRng(seedVal !== "" ? parseInt(seedVal) : Math.floor(Math.random() * 2**32));
+
+    function randomTag() {
+      return tags[Math.floor(rng() * tags.length)];
+    }
+
+    function wrapChar(char) {
+      const tag = randomTag();
+      return `<${tag}>${char}</${tag}>`;
+    }
+
+    function shouldWrap(i) {
+      if (wrapMode === "all") return true;
+      if (wrapMode === "odd") return i % 2 !== 0;
+      if (wrapMode === "random") return rng() < wrapChance;
+      return false;
+    }
+
+    const parts = [];
+    for (let i = 0; i < txt.length; i++) {
+      const char = txt[i];
+      if (shouldWrap(i + 1)) { // 1-indexed like Lua
+        parts.push(wrapChar(char));
+      } else {
+        parts.push(char);
+      }
+    }
+
+    document.getElementById("output").textContent = parts.join("");
+  }
+
+  function copyOutput() {
+    const text = document.getElementById("output").textContent;
+    navigator.clipboard.writeText(text).catch(() => {
+      const el = document.getElementById("output");
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+    });
+  }
+
+  document.getElementById("input").addEventListener("keydown", e => {
+    if (e.key === "Enter" && e.ctrlKey) convert();
+  });
+</script>
+</body>
+</html>
