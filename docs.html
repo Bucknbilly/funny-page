@@ -4,35 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mikeyware Library — Documentation</title>
-<meta name="theme-color" content="#4ade80">
+<meta name="theme-color" content="#ff4d6d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:       #080808;
-    --bg1:      #0f0f0f;
-    --bg2:      #161616;
-    --bg3:      #1c1c1c;
-    --border:   #232323;
-    --border-hi:#303030;
-    --text:     #ececec;
-    --dim:      #888;
-    --muted:    #444;
-    --green:    #4ade80;
-    --green-bg: rgba(74,222,128,0.07);
-    --green-bd: rgba(74,222,128,0.18);
-    --amber:    #fbbf24;
-    --amber-bg: rgba(251,191,36,0.07);
-    --amber-bd: rgba(251,191,36,0.18);
-    --blue:     #60a5fa;
-    --blue-bg:  rgba(96,165,250,0.07);
-    --blue-bd:  rgba(96,165,250,0.18);
-    --red:      #f87171;
-    --red-bg:   rgba(248,113,113,0.07);
-    --red-bd:   rgba(248,113,113,0.18);
+    --bg:       #0d0508;
+    --bg1:      #130a0d;
+    --bg2:      #1c0f14;
+    --bg3:      #24141a;
+    --border:   #3a1a22;
+    --border-hi:#562030;
+    --text:     #f5e6ea;
+    --dim:      #b08090;
+    --muted:    #5a3040;
+    --green:    #ff4d6d;
+    --green-bg: rgba(255,77,109,0.08);
+    --green-bd: rgba(255,77,109,0.25);
+    --amber:    #ffb347;
+    --amber-bg: rgba(255,179,71,0.08);
+    --amber-bd: rgba(255,179,71,0.25);
+    --blue:     #ff8fab;
+    --blue-bg:  rgba(255,143,171,0.08);
+    --blue-bd:  rgba(255,143,171,0.25);
+    --red:      #ff6b6b;
+    --red-bg:   rgba(255,107,107,0.08);
+    --red-bd:   rgba(255,107,107,0.25);
     --mono:     'Azeret Mono', monospace;
-    --sans:     'Instrument Sans', sans-serif;
-    --radius:   8px;
+    --sans:     'Nunito', sans-serif;
+    --radius:   14px;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -49,8 +49,8 @@
     position: fixed;
     inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+      linear-gradient(rgba(255,77,109,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,77,109,0.03) 1px, transparent 1px);
     background-size: 56px 56px;
     pointer-events: none;
     z-index: 0;
@@ -87,9 +87,9 @@
     font-size: 10px;
     font-weight: 700;
     background: var(--green);
-    color: #000;
-    padding: 2px 7px;
-    border-radius: 3px;
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 20px;
     letter-spacing: 0.04em;
   }
   .logo-name {
@@ -116,14 +116,16 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 18px;
+    padding: 7px 18px;
     color: var(--dim);
     text-decoration: none;
     font-family: var(--mono);
     font-size: 11.5px;
     border-left: 2px solid transparent;
+    border-radius: 0 10px 10px 0;
     transition: color 0.12s, background 0.12s, border-color 0.12s;
     cursor: pointer;
+    margin-right: 8px;
   }
   .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.025); }
   .nav-item.active { color: var(--green); border-left-color: var(--green); background: var(--green-bg); }
@@ -271,8 +273,8 @@
     font-family: var(--mono);
     font-size: 9px;
     font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 3px;
+    padding: 2px 9px;
+    border-radius: 20px;
     letter-spacing: 0.06em;
     flex-shrink: 0;
   }
@@ -350,12 +352,12 @@
   .code-btn.ok { color: var(--green); }
   pre { padding: 15px 16px; overflow-x: auto; }
   pre code { font-family: var(--mono); font-size: 12px; line-height: 1.7; color: var(--dim); }
-  .kw  { color: #c084fc; }
-  .fn  { color: #93c5fd; }
-  .str { color: #86efac; }
-  .num { color: #fb923c; }
-  .var { color: #fde68a; }
-  .op  { color: #6b7280; }
+  .kw  { color: #ff6b9d; }
+  .fn  { color: #ffb3c6; }
+  .str { color: #ff8fab; }
+  .num { color: #ffb347; }
+  .var { color: #ffd6e0; }
+  .op  { color: #7a4a55; }
   .note {
     display: flex; gap: 10px;
     background: var(--amber-bg); border: 1px solid var(--amber-bd);
@@ -387,14 +389,14 @@
   .step-num {
     font-family: var(--mono); font-size: 10px; font-weight: 700;
     color: var(--green); background: var(--green-bg);
-    border: 1px solid var(--green-bd); border-radius: 4px;
-    padding: 1px 7px; flex-shrink: 0; margin-top: 2px;
+    border: 1px solid var(--green-bd); border-radius: 20px;
+    padding: 1px 10px; flex-shrink: 0; margin-top: 2px;
   }
   p code, li code, .card-desc code, .note code, .danger code, .tip code,
   .section-desc code, .step code, .ret-row code {
     font-family: var(--mono); font-size: 11px;
     background: var(--bg3); border: 1px solid var(--border);
-    padding: 1px 5px; border-radius: 3px; color: var(--green);
+    padding: 1px 6px; border-radius: 20px; color: var(--green);
   }
   ul { padding-left: 18px; }
   li { color: var(--dim); font-size: 13px; margin-bottom: 5px; }
